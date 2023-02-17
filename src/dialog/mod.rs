@@ -47,9 +47,12 @@ impl Dialog {
         self.askabout_top_text = self.askabout_top_text.replace(target, replacement);
     }
 
+    pub fn add_interchange(&mut self, interchange: Interchange) {
+        self.interchanges.push(interchange);
+    }
+
     pub fn add_empty_interchange(&mut self) {
-        let new_interchange = Interchange::default();
-        self.interchanges.push(new_interchange);
+        self.add_interchange(Interchange::default());
     }
 
     pub fn add_item_consumption_sequence(&mut self, mut count: usize, interchange_item_check: Interchange, interchange_item_missing: Interchange) {
@@ -68,6 +71,16 @@ impl Dialog {
 
     pub fn add_password_entry_sequence(&mut self, body: Body, options: &[&str], correct_sequence: &[usize]) {
         for i in 0..correct_sequence.len() {
+            if i != 0 {
+                // Sad path
+                let mut replies = Vec::with_capacity(options.len());
+                for j in 0..options.len() {
+                    let destination_interchange = self.interchange_count() as i32 + 2;
+                    replies.push(Reply::continue_to(destination_interchange, options[j].to_owned(), Cmd::none()));
+                }
+                self.interchanges.push(Interchange::new(body.clone(), replies));
+            }
+
             // Happy path
             let mut replies = Vec::with_capacity(options.len());
             for j in 0..options.len() {
@@ -75,17 +88,9 @@ impl Dialog {
                 replies.push(Reply::continue_to(destination_interchange, options[j].to_owned(), Cmd::none()));
             }
             self.interchanges.push(Interchange::new(body.clone(), replies));
-
-            // Sad path
-            let mut replies = Vec::with_capacity(options.len());
-            for j in 0..options.len() {
-                let destination_interchange = self.interchange_count() as i32 + 2;
-                replies.push(Reply::continue_to(destination_interchange, options[j].to_owned(), Cmd::none()));
-            }
-            self.interchanges.push(Interchange::new(body.clone(), replies));
         }
-        self.interchanges.push(Interchange::placeholder(String::from("SUCCESS")));
         self.interchanges.push(Interchange::placeholder(String::from("FAILURE")));
+        self.interchanges.push(Interchange::placeholder(String::from("SUCCESS")));
     }
 
     // TODO: Remove this crap.
