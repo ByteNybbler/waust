@@ -71,6 +71,8 @@ impl Dialog {
 
     pub fn add_password_entry_sequence(&mut self, body: Body, options: &[&str], correct_sequence: &[usize]) {
         for i in 0..correct_sequence.len() {
+            let correct_option = correct_sequence[i];
+
             if i != 0 {
                 // Sad path
                 let mut replies = Vec::with_capacity(options.len());
@@ -84,7 +86,7 @@ impl Dialog {
             // Happy path
             let mut replies = Vec::with_capacity(options.len());
             for j in 0..options.len() {
-                let destination_interchange = self.interchange_count() as i32 + if i == j { 2 } else { 1 };
+                let destination_interchange = self.interchange_count() as i32 + if j == correct_option { 2 } else { 1 };
                 replies.push(Reply::continue_to(destination_interchange, options[j].to_owned(), Cmd::none()));
             }
             self.interchanges.push(Interchange::new(body.clone(), replies));

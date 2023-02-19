@@ -72,7 +72,7 @@ pub fn make_funny_password_dia() {
     dialog.add_empty_interchange();
     dialog.add_password_entry_sequence(
         Body::one_liner(String::from("...")),
-        &["1", "2", "3", "4", "5"],
-        &[0, 1, 2]);
+        &["1", "2", "3", "4", "5", "6"],
+        &[2, 1, 0, 1, 2]);
     dialog.to_dia("1").unwrap();
 }
