@@ -31,8 +31,10 @@ pub struct WlvBeta {
     water_glow: i32,
     // Number of objects is written here.
     objects: Vec<BetaObject>,
-    level_tile_logics: Vec<LevelTileLogic>,
-    light_goals: LightGoals,
+
+    // TODO: The following are only written in the beta's save files:
+    //level_tile_logics: Vec<LevelTileLogic>,
+    //light_goals: LightGoals,
 }
 
 impl WlvLatest {
@@ -75,8 +77,8 @@ impl From<WlvBeta> for WlvLatest {
             level_texture_name: LevelTexture::custom("wa_beta".to_owned()),
             water_texture_name: WaterTexture::default(),
             edge_style: Default::default(),
-            light: other.light_goals.light.goal,
-            ambient: other.light_goals.ambient.goal,
+            light: ColorRgb::DEFAULT_LIGHT,
+            ambient: ColorRgb::DEFAULT_AMBIENT,
             music: Music::NONE,
             weather: Weather::NONE,
             adventure_title: String::new(),
@@ -90,11 +92,24 @@ pub fn convert_beta_to_wa3() -> Result<(), Error> {
     for entry in std::fs::read_dir("WA-BETA").map_err(Error::InputOutput)? {
         let entry = entry.map_err(Error::InputOutput)?;
         let filename = entry.file_name();
-        println!("Converting {:?}", entry.path());
-        let wlv = WlvBeta::from_file(entry.path())?;
-        //println!("Conversion OK.");
-        wlv.modernize_to_file(&format!("{output_folder}/{filename:?}"))?;
-        //println!("To file OK.");
+        let filename_str = filename.to_str().expect("filename should be valid UTF-8");
+        match entry
+            .path()
+            .extension()
+            .expect("extension should exist")
+            .to_str()
+            .expect("extension should be valid UTF-8") {
+            "wlv" => {
+                println!("Converting {:?}", entry.path());
+                let wlv = WlvBeta::from_file(entry.path())?;
+                println!("Deserialization OK.");
+                wlv.modernize_to_file(&format!("{output_folder}/{filename_str}"))?;
+                println!("Serialization OK.");
+            },
+            other => {
+                println!("Ignoring unsupported file extension {other}");
+            }
+        }
     }
     Ok(())
 }
