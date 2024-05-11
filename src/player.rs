@@ -99,7 +99,7 @@ pub struct CurrentAdventure {
     coins: i32,
     time: i32,
     score: i32,
-    adventure_timer: i32
+    adventure_timer: i32,
     level: i32,
     status: i32,
     number: i32,
@@ -144,7 +144,7 @@ pub struct GlobalData {
     indigo_active: i32,
     future: [i32; 4],
     wa3_blue_flower: i32,
-    wa3_blue_flower_status: i32
+    wa3_blue_flower_status: i32,
     custom_map_name: String
 }
 
@@ -178,7 +178,7 @@ pub struct LevelMusic {
 
 #[derive(Debug, Serializable, Deserializable)]
 pub struct PlayerSave {
-    hub_status_ HubStatus,
+    hub_status: HubStatus,
     player: Player,
     inventory: Inventory,
     shards_are_active: bool,
@@ -186,8 +186,8 @@ pub struct PlayerSave {
     inventory_b4: Inventory,
     light_power_b4: i32,
     current_adventure: CurrentAdventure,
-    adventure_completions: [AdventureCompletion; 500]
-    counts: CurrentAdventureCounts
+    adventure_completions: [AdventureCompletion; 500],
+    counts: CurrentAdventureCounts,
     global_data: GlobalData,
     future_strings: [String; 4],
     future_floats: [f32; 10],
@@ -196,7 +196,7 @@ pub struct PlayerSave {
     mystery_number: [i32; 4],
     mystery_number_pos: i32,
     replay_adventure: ReplayAdventure,
-    level_music_custom: LevelMusic
+    level_music_custom: LevelMusic,
     custom_shard_enabled: bool,
     custom_glyph_enabled: bool,
     // TODO: more
