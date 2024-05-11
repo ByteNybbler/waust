@@ -15,13 +15,13 @@ fn main() {
 }
 
 pub fn make_spellball_wop() {
-    let mut spellball = Object::from_wlv("SaveLevel.wlv", 0x3889A).unwrap();
+    let mut spellball = GameObject::from_wlv("SaveLevel.wlv", 0x3889A).unwrap();
     spellball.set_logic(ObjectLogic::spellball(1));
     spellball.set_model_name("!None".to_owned());
     spellball.set_texture_name("!None".to_owned());
-    spellball.set_tile_pos(0, 0);
-    spellball.set_2d_pos(0.0, 0.0);
-    spellball.set_2d_delta(0.0, 0.0);
+    spellball.set_tile_pos(Vector2::splat(0));
+    spellball.set_world_pos(Vector3::splat(0.0));
+    spellball.set_delta(Vector3::splat(0.0));
     spellball.set_timer(0);
     spellball.set_status(0);
     spellball.zero_data();
@@ -34,7 +34,7 @@ pub fn make_spellball_wop() {
 }
 
 pub fn make_mechanism_piece_wop() {
-    let mut obj = Object::new("!None".to_owned(), "!None".to_owned(), ObjectLogic::NONE);
+    let mut obj = GameObject::new("!None".to_owned(), "!None".to_owned(), ObjectLogic::NONE);
     obj.set_tile_type_collision(TileTypeCollision::all_floors_and_06_07());
     obj.set_object_type_collision(ObjectTypeCollision::NONE);
     obj.set_movement_type(MovementType::NORTH_LEFT);

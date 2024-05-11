@@ -109,7 +109,7 @@ impl Dialog {
         Ok(())
     }
 
-    pub fn from_dia<P: AsRef<Path>>(path: P) -> Result<Object, Error> {
+    pub fn from_dia<P: AsRef<Path>>(path: P) -> Result<GameObject, Error> {
         let file = File::open(path).map_err(Error::InputOutput)?;
         serde_blitz3d::from_reader(file).map_err(Error::Serde)
     }

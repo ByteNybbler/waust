@@ -5,7 +5,7 @@ pub struct LevelTileLogic(i32);
 
 impl LevelTileLogic {
     pub const FLOOR: Self = Self(0);
-    pub const WALLS: Self = Self(1);
+    pub const WALL: Self = Self(1);
     pub const WATER: Self = Self(2);
     pub const TELEPORTER: Self = Self(3);
     pub const BRIDGE: Self = Self(4);
