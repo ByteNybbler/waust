@@ -6,3 +6,5 @@ pub mod euler;
 pub use euler::*;
 pub mod vector;
 pub use vector::*;
+pub mod vec_len;
+pub use vec_len::*;

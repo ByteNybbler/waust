@@ -30,7 +30,8 @@ pub struct WlvBeta {
     water_transparent: i32,
     water_glow: i32,
     // Number of objects is written here.
-    objects: Vec<BetaObject>,
+    // TODO: Other serialization should use VecLen.
+    objects: VecLen<BetaObject>,
 
     // TODO: The following are only written in the beta's save files:
     //level_tile_logics: Vec<LevelTileLogic>,
@@ -73,7 +74,7 @@ impl From<WlvBeta> for WlvLatest {
             water_flow: other.water_flow,
             water_transparent: other.water_transparent,
             water_glow: other.water_glow,
-            objects: other.objects.into_iter().map(|object| object.into()).collect(),
+            objects: other.objects.0.into_iter().map(|object| object.into()).collect(),
             level_texture_name: LevelTexture::custom("wa_beta".to_owned()),
             water_texture_name: WaterTexture::default(),
             edge_style: Default::default(),
