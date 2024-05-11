@@ -4,6 +4,8 @@ pub mod music;
 pub use music::*;
 pub mod texture;
 pub use texture::*;
+pub mod terrain;
+pub use terrain::*;
 pub mod weather;
 pub use weather::*;
 pub mod wlv;
